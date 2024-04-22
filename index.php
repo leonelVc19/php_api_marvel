@@ -1,20 +1,15 @@
 <?php
-    //FORMA MAS BASICA
+    declare (strict_types=1); /// <- a nivel de archivos.
+    //Otra forma 
     const API_URL = "https://dev.whenisthenextmcufilm.com/api";
-    # Inicializar una nueva sesion de Curl; ch = Curl handle
-    
-    $ch = curl_init(API_URL); // Llamado a un api con PHP. Esta es un forma hay mas.
-    
-    curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true ); //que devuelva el resultad
-    //Ejecutar la peticion y guardar el resulado
-    $result = curl_exec( $ch );  //EJECUTANDO LA PETICION
-    /**
-     * Otra forma de hacer un peticion es utilizando file_get_contents
-     * $result = file_get_contents( API_URL ); //si solo se quiere hacer un peticion GET
-     */
-    $data = json_decode( $result, true ); //en un array asosciativo
-    curl_close( $ch ); //Cerrar la peticion de CURL
+    function get_data(string $url) {
+        $result = file_get_contents( $url );  
+        $data = json_decode( $result, true );
+        return $data;
+    };
+    $data = get_data(API_URL);
 ?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="La proxima pelicula de MARVEL" >
@@ -54,7 +49,8 @@
         }
     </style>
 </head>
-<main> <br><br>
+<main>
+    <br><br>
     <section>
         <img 
             src="<?= $data["poster_url"]; ?>" 
@@ -62,6 +58,7 @@
             width="240px"
         >
     </section>
+
     <hgroup>
         <p><?= $data["overview"]?> </p>
         <br>
